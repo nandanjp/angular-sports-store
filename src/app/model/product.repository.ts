@@ -2,23 +2,30 @@ import { Injectable } from "@angular/core";
 import { Product } from "./product.model";
 import { StaticDataSource } from "./static.datasource";
 @Injectable()
-export class ProductRepository {
+export class ProductRepository
+{
     private products: Product[] = [];
     private categories: string[] = [];
-    constructor(private dataSource: StaticDataSource) {
-        dataSource.getProducts().subscribe(data => {
+    constructor(private dataSource: StaticDataSource)
+    {
+        dataSource.getProducts().subscribe(data =>
+        {
             this.products = data;
             this.categories = data.map(p => p.category)
-                .filter((c, index, array) => array.indexOf(c) == index).sort();
+                .filter((c, index, array) => array.indexOf(c) == index).sort() as string[];
         });
-    } getProducts(category: string = null): Product[] {
+    }
+    getProducts(category: string = ""): Product[]
+    {
         return this.products
-            .filter(p => category == null || category == p.category);
+            .filter(p => category === "" || category === p.category) as Product[];
     }
-    getProduct(id: number): Product {
-        return this.products.find(p => p.id == id);
+    getProduct(id: number): Product
+    {
+        return this.products.find(p => p.id == id) || new Product();
     }
-    getCategories(): string[] {
+    getCategories(): string[]
+    {
         return this.categories;
     }
 }
